@@ -145,16 +145,16 @@ docker compose run --rm freqtrade backtesting \
 
 | # | Strategy | Config | Trades | Win% | Avg Profit | Total P/L | Drawdown | Sharpe | Score | Verdict |
 |:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|
-| E01 | ScalpTight | Spot | | | | | | | | |
-| E02 | TrendRider | Spot | | | | | | | | |
-| E03 | MeanReversion | Spot | | | | | | | | |
-| E04 | BreakoutCatcher | Spot | | | | | | | | |
-| E05 | DCAGrid | Spot | | | | | | | | |
-| E06 | TrendRider | Futures | | | | | | | | |
-| E07 | MeanReversion | Futures | | | | | | | | |
-| E08 | BreakoutCatcher | Futures | | | | | | | | |
-| E09 | Best1 Hyperopt | Futures | | | | | | | | |
-| E10 | Best2 Hyperopt | Futures | | | | | | | | |
+| E01 | ScalpTight | Spot | 12 | 58.3% | 0.02% | 0.01% (0.13 USDT) | 0.01% | 0.11 | 5.1 | REJECT |
+| E02 | TrendRider | Spot | 382 | -0.21% | -4.06% (-40.59 USDT) | 4.06% | -9.74 | 3.55 | REJECT |
+| E03 | MeanReversion | Spot | 7 | -0.27% | -0.09% (-0.92 USDT) | 0.16% | -0.09 | 3.85 | REJECT |
+| E04 | BreakoutCatcher | Spot | 1705 | -0.34% | -28.55% (-285.5 USDT) | 28.55% | -15.93 | 1.8 | REJECT |
+| E05 | DCAGrid | Spot | 7877 | -0.08% | -90.01% (-900.1 USDT) | 90.14% | -15.27 | 2.55 | REJECT |
+| E06 | TrendRider | Futures | 740 | -0.41% | -43.20% (-43.19 USDT) | 43.20% | - | 1.8 | REJECT |
+| E07 | MeanReversion | Futures | 14 | -0.13% | -0.31% (-0.30 USDT) | 0.98% | -0.07 | 4.3 | REFINE |
+| E08 | BreakoutCatcher | Futures | 1216 | -0.49% | -84.89% (-84.89 USDT) | 84.89% | - | 1.8 | REJECT |
+| E09 | ScalpTight Hyp | Futures | 2 | 50.0% | 0.06% | 0.02% (0.017 USDT) | 0.00% | 0.08 | 5.1 | REFINE |
+| E10 | MeanRev Hyp | Futures | 66 | 68.2% | 0.24% | 2.44% (2.44 USDT) | 2.31% | 0.28 | 6.4 | KEEP |
 
 ### Scoring (tính thủ công)
 

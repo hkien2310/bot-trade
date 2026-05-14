@@ -1,0 +1,32 @@
+{
+  "strategy_name": "MeanReversion",
+  "params": {
+    "max_open_trades": {
+      "max_open_trades": 3
+    },
+    "buy": {
+      "adx_max": 22,
+      "rsi_oversold": 26
+    },
+    "sell": {
+      "rsi_overbought": 68
+    },
+    "roi": {
+      "0": 0.17,
+      "75": 0.142,
+      "212": 0.062,
+      "271": 0
+    },
+    "stoploss": {
+      "stoploss": -0.301
+    },
+    "trailing": {
+      "trailing_stop": true,
+      "trailing_stop_positive": 0.295,
+      "trailing_stop_positive_offset": 0.388,
+      "trailing_only_offset_is_reached": true
+    }
+  },
+  "ft_stratparam_v": 1,
+  "export_time": "2026-05-14 15:26:42.196921+00:00"
+}

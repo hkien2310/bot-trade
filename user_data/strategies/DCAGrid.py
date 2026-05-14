@@ -14,7 +14,7 @@ import math
 class DCAGrid(IStrategy):
     timeframe = '5m'
     startup_candle_count = 30
-    can_short = True
+    can_short = False
     position_adjustment_enable = True  # Enable DCA
     max_entry_position_adjustment = 3  # Max 3 DCA orders
     

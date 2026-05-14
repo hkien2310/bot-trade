@@ -31,6 +31,11 @@
             ".*BEAR/USDT:USDT"
         ]
     },
+    "pairlists": [
+        {
+            "method": "StaticPairList"
+        }
+    ],
     "entry_pricing": {
         "price_side": "same",
         "use_order_book": true,

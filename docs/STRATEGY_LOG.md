@@ -234,11 +234,34 @@ Drawdown 0.57% = cực kỳ an toàn.
 
 ---
 
-## Hướng Cải Thiện Tiếp Theo (TODO)
+## Multi-Strategy Matrix (v2 Upgrade Plan - 2026-05-14)
 
-- [ ] **v6a**: Tăng thêm cặp tiền (DOGE, AVAX, MATIC) với v5 params
-- [ ] **v6b**: Test trên data 2024 (out-of-sample validation)
-- [ ] **v6c**: Time-of-day filter (chỉ trade giờ US/Asia session)
-- [ ] **v6d**: ATR-based dynamic stoploss thay vì fixed -8.8%
-- [ ] **v6e**: Chạy dry-run 2-4 tuần để validate real-time
-- [ ] **v6f**: Hyperopt với ProfitDrawDownHyperOptLoss (thử loss function khác)
+**Mục tiêu**: Tìm kiếm strategy tốt nhất cho Binance Futures x2 với vốn $100.
+**Kết quả Ma Trận 10 Thử Nghiệm (E01 - E10)**:
+
+| # | Strategy | Mode | Trades | Win% | Profit % | Drawdown | Sharpe | Verdict |
+|:--|:--|:--|:--|:--|:--|:--|:--|:--|
+| E01 | ScalpTight | Spot | 12 | 58.3% | 0.01% | 0.01% | 0.11 | REJECT |
+| E02 | TrendRider | Spot | 382 | 23.6% | -4.06% | 4.06% | -9.74 | REJECT |
+| E03 | MeanReversion | Spot | 7 | 42.9% | -0.09% | 0.16% | -0.09 | REJECT |
+| E04 | BreakoutCatcher | Spot | 1705 | 7.2% | -28.55% | 28.55% | -15.93 | REJECT |
+| E05 | DCAGrid | Spot | 7877 | 44.1% | -90.01% | 90.14% | -15.27 | REJECT |
+| E06 | TrendRider | Futures | 740 | 14.5% | -43.20% | 43.20% | N/A | REJECT |
+| E07 | MeanReversion | Futures | 14 | 57.1% | -0.31% | 0.98% | -0.07 | REFINE |
+| E08 | BreakoutCatcher | Futures | 1216 | 2.5% | -84.89% | 84.89% | N/A | REJECT |
+| E09 | ScalpTight Hyp | Futures | 2 | 50.0% | 0.02% | 0.00% | 0.08 | REFINE |
+| E10 | MeanRev Hyp | Futures | 66 | 68.2% | **2.44%** | **2.31%** | **0.28** | **KEEP** |
+
+### KEY INSIGHTS từ E01-E10 Matrix
+1. **Hyperopt là bắt buộc cho Futures**: Các chiến lược default (dù hoạt động tốt trên Spot hoặc lý thuyết) đều fail thảm hại trên Futures nếu không optimize params.
+2. **MeanReversion là best fit**: Trong market sideway/downtrend dài (hiện tại), MeanReversion + Hyperopt (E10) cho kết quả rất tốt: Win rate 68.2%, Drawdown nhỏ (2.31%), Sharpe dương (0.28).
+3. **Breakout và DCA rất rủi ro**: BreakoutCatcher (E04/E08) bị false breakout liên tục. DCAGrid (E05) cháy account (-90%) khi market sập mạnh.
+4. **TrendRider cần trailing stop linh hoạt hơn**: Swing trade trên TF 5m với leverage dễ bị stopout trước khi kịp catch trend (win rate rớt xuống 14-23%).
+
+---
+
+## Hướng Cải Thiện Tiếp Theo (Phase 2)
+
+- [ ] **Phase 2.1**: Tinh chỉnh `MeanReversion.json` (kết quả từ E10) và cho chạy real-time paper trading (Dry-Run) trên Binance Futures.
+- [ ] **Phase 2.2**: Chạy thêm Hyperopt cho `TrendRider` trên Futures (do v5 từng thành công trên Spot) để xem có thể cứu được style này không.
+- [ ] **Phase 2.3**: Xây dựng combo `MeanReversion` + 1 Trend style để balance portfolio.

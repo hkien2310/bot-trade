@@ -1,0 +1,35 @@
+{
+  "strategy_name": "ScalpEmaRsiVwap",
+  "params": {
+    "max_open_trades": {
+      "max_open_trades": 2
+    },
+    "buy": {
+      "adx_threshold": 32,
+      "ema_fast_period": 7,
+      "ema_slow_period": 23,
+      "rsi_buy_lower": 55,
+      "rsi_buy_upper": 60
+    },
+    "sell": {
+      "rsi_sell_upper": 80
+    },
+    "roi": {
+      "0": 0.181,
+      "32": 0.072,
+      "87": 0.022,
+      "185": 0
+    },
+    "stoploss": {
+      "stoploss": -0.088
+    },
+    "trailing": {
+      "trailing_stop": true,
+      "trailing_stop_positive": 0.269,
+      "trailing_stop_positive_offset": 0.284,
+      "trailing_only_offset_is_reached": false
+    }
+  },
+  "ft_stratparam_v": 1,
+  "export_time": "2026-05-14 14:32:32.619421+00:00"
+}

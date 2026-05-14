@@ -232,35 +232,29 @@ Dưới 50% = Discount → CHỉ LONG
 
 ## 4. Đề Xuất — Kế Hoạch Triển Khai
 
-### Phase A: Quick Win (Session tiếp theo)
-**MeanReversion v2 = Entry hiện tại + Exit mới**
-- Giữ entry logic (BB + RSI + ADX + StochRSI) → đã proven 68% win rate
-- Thay exit: Fixed SL (-2%) + Trailing TP
-- Hyperopt tìm SL/trailing tối ưu trong range constraint
-- **Mục tiêu**: R:R 1:2, mỗi trade ±$1-$2
-- **Thời gian**: 30 phút
+### Phase A: SMC Core (Session tiếp theo) ← ƯU TIÊN #1
+**Build SMC strategy MỚI từ đầu — KHÔNG dùng MeanReversion**
+- Implement BOS (Break of Structure) → xác định trend
+- Implement FVG (Fair Value Gap) → tìm vùng entry
+- Premium/Discount zone → filter hướng trade
+- Exit: Fixed SL (-2%) + Trailing TP
+- **Mục tiêu**: R:R 1:2-1:3, mỗi trade ±$1-$2
+- **Thời gian**: 1-2 giờ code + test + hyperopt
 
-### Phase B: SMC Lite (Session sau)
-**Thêm BOS + FVG vào entry filter**
-- Implement BOS (xác định trend structure)
-- Implement FVG (tìm vùng entry chính xác)
-- Kết hợp: Chỉ trade khi BB+RSI signal + BOS confirm + FVG zone
-- **Mục tiêu**: Giảm false signal, tăng R:R lên 1:3
-- **Thời gian**: 1-2 giờ code + test
+### Phase B: SMC Advanced (Session sau)
+**Nâng cấp thêm Order Block + Liquidity Sweep**
+- Order Block → entry chính xác hơn
+- Liquidity sweep filter → chỉ trade sau khi smart money đã gom
+- **Mục tiêu**: R:R 1:3-1:5
+- **Thời gian**: 1-2 session
 
-### Phase C: SMC Full (Tuần sau)
-**Build SMC strategy riêng biệt**
-- BOS → CHoCH → Order Block → Entry
-- Liquidity sweep filter
-- Premium/Discount zone filter
-- **Mục tiêu**: Strategy hoàn toàn mới, R:R 1:3-1:5
-- **Thời gian**: Nhiều session
-
-### Phase D: ML Enhancement (Tháng sau)
+### Phase C: ML Enhancement (Khi SMC đã profitable)
 **FreqAI bổ trợ**
 - Dùng SMC features làm input cho ML model
-- Model predict xác suất trade thành công
-- **Chỉ làm khi Phase B/C đã profitable**
+- **Chỉ làm khi Phase A/B đã profitable**
+
+> ⚠️ **MeanReversion được GÁC LẠI** — nó dùng indicator-based (BB+RSI), triết lý khác SMC.
+> Nếu SMC không hiệu quả, có thể quay lại MeanReversion + siết TP/SL làm backup plan.
 
 ---
 
@@ -268,13 +262,14 @@ Dưới 50% = Discount → CHỉ LONG
 
 | # | Quyết định | Lý do |
 |:--|:--|:--|
-| 1 | Giữ MeanReversion entry logic | Win rate 68% đã proven |
-| 2 | Thay exit: Fixed SL + Trailing TP | Avg profit 0.24% quá thấp, cần R:R 1:2+ |
+| 1 | ~~Giữ MeanReversion entry logic~~ | ~~Win rate 68% đã proven~~ → **GÁC LẠI** |
+| 2 | Exit: Fixed SL (-2%) + Trailing TP | Avg profit 0.24% quá thấp, cần R:R 1:2+ |
 | 3 | SL target ~-2% | Cho giá thở, R:R 1:2 → TP ≥ +4% |
 | 4 | Trailing TP thay fixed TP | Bắt big winners, cut losses short |
-| 5 | SMC (BOS+FVG) là ưu tiên #1 tiếp theo | Phù hợp R:R 1:3+, code được |
+| 5 | SMC (BOS+FVG) là ưu tiên #1 | Phù hợp R:R 1:3+, code được |
 | 6 | FreqAI để phase cuối | Cần rule-based thành công trước |
 | 7 | Hyperopt tìm params, không chọn thủ công | Máy tìm tối ưu tốt hơn cảm tính |
+| 8 | **GÁC MeanReversion, build SMC từ đầu** | 2 triết lý khác nhau, không nên trộn |
 
 ---
 

@@ -1,0 +1,28 @@
+{
+  "strategy_name": "SmartMoneyConcepts",
+  "params": {
+    "max_open_trades": {
+      "max_open_trades": 3
+    },
+    "buy": {
+      "swing_length": 11
+    },
+    "roi": {
+      "0": 0.346,
+      "101": 0.069,
+      "240": 0.017,
+      "531": 0
+    },
+    "stoploss": {
+      "stoploss": -0.041
+    },
+    "trailing": {
+      "trailing_stop": true,
+      "trailing_stop_positive": 0.243,
+      "trailing_stop_positive_offset": 0.322,
+      "trailing_only_offset_is_reached": true
+    }
+  },
+  "ft_stratparam_v": 1,
+  "export_time": "2026-05-15 01:40:41.586518+00:00"
+}

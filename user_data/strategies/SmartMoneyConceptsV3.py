@@ -63,10 +63,33 @@ class SmartMoneyConceptsV3(IStrategy):
     order_types = {
         'entry': 'limit',
         'exit': 'limit',
-        'stoploss': 'limit',
-        'stoploss_on_exchange': False,
+        'stoploss': 'market',
+        'stoploss_on_exchange': True,
         'stoploss_on_exchange_interval': 60,
     }
+
+    def leverage(self, pair, current_time, current_rate, proposed_leverage,
+                 max_leverage, entry_tag, side, **kwargs):
+        return 10.0
+
+    # ==========================================
+    # LÃI KÉP BẬC THANG (MODE 3 - SAFE TIERED)
+    # ==========================================
+    def custom_stake_amount(self, pair: str, current_time, current_rate: float,
+                            proposed_stake: float, min_stake: float, max_stake: float,
+                            leverage: float, entry_tag: str, side: str,
+                            **kwargs) -> float:
+        total_wallet = self.wallets.get_total_stake_amount()
+        base_stake = 15.0
+        base_wallet = 100.0
+        
+        # Mode 3: Tiered x1.5 (Vốn x2 -> Vol x1.5)
+        import math
+        power = int(math.log2(max(1, total_wallet / base_wallet)))
+        calculated_stake = base_stake * (1.5 ** power)
+                
+        # Giới hạn tối đa 50k$ để chống trượt giá và quá tải order book
+        return min(calculated_stake, max_stake, 50000.0)
 
     def informative_pairs(self):
         pairs = self.dp.current_whitelist()
@@ -293,6 +316,3 @@ class SmartMoneyConceptsV3(IStrategy):
 
         return dataframe
 
-    def leverage(self, pair, current_time, current_rate, proposed_leverage,
-                 max_leverage, entry_tag, side, **kwargs):
-        return 10.0

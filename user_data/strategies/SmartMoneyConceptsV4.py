@@ -11,7 +11,7 @@ import numpy as np
 from smartmoneyconcepts import smc
 
 
-class SmartMoneyConceptsV3(IStrategy):
+class SmartMoneyConceptsV4(IStrategy):
     """
     SMC Strategy v2
 
@@ -296,3 +296,21 @@ class SmartMoneyConceptsV3(IStrategy):
     def leverage(self, pair, current_time, current_rate, proposed_leverage,
                  max_leverage, entry_tag, side, **kwargs):
         return 10.0
+
+    compounding_mode = 3
+
+    def custom_stake_amount(self, pair: str, current_time, current_rate: float,
+                            proposed_stake: float, min_stake: float, max_stake: float,
+                            leverage: float, entry_tag: str, side: str,
+                            **kwargs) -> float:
+        import math
+        total_wallet = self.wallets.get_total_stake_amount()
+        base_stake = 15.0
+        base_wallet = 100.0
+        
+        calculated_stake = base_stake
+        if self.compounding_mode == 3:
+            power = int(math.log2(max(1, total_wallet / base_wallet)))
+            calculated_stake = base_stake * (1.5 ** power)
+                
+        return min(calculated_stake, max_stake, 50000.0)

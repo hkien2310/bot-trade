@@ -1,5 +1,5 @@
 {
-  "strategy_name": "SmartMoneyConceptsV3",
+  "strategy_name": "SmartMoneyConceptsV4",
   "params": {
     "max_open_trades": {
       "max_open_trades": 3

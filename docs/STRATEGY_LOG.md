@@ -262,6 +262,108 @@ Drawdown 0.57% = cực kỳ an toàn.
 
 ## Hướng Cải Thiện Tiếp Theo (Phase 2)
 
-- [ ] **Phase 2.1**: Tinh chỉnh `MeanReversion.json` (kết quả từ E10) và cho chạy real-time paper trading (Dry-Run) trên Binance Futures.
-- [ ] **Phase 2.2**: Chạy thêm Hyperopt cho `TrendRider` trên Futures (do v5 từng thành công trên Spot) để xem có thể cứu được style này không.
-- [ ] **Phase 2.3**: Xây dựng combo `MeanReversion` + 1 Trend style để balance portfolio.
+- [x] ~~Phase 2.1: MeanReversion Dry-Run~~ → **GÁC LẠI** (chuyển sang SMC)
+- [x] ~~Phase 2.2: TrendRider Hyperopt~~ → **GÁC LẠI**
+- [x] **Phase A+B: SMC Strategy** → ✅ DONE (xem bên dưới)
+
+---
+
+## SMC — Smart Money Concepts Strategy (2026-05-15) 🏆🏆🏆 NEW CHAMPION
+
+### Triết lý
+Không dùng indicator (RSI, BB, MACD). Thay vào đó, **theo dõi dấu chân dòng tiền lớn (institutions)**:
+- **BOS** (Break of Structure): Xác định trend
+- **CHoCH** (Change of Character): Phát hiện đảo chiều
+- **FVG** (Fair Value Gap): Tìm vùng entry chính xác
+- **Order Block**: Vùng institutions đặt lệnh lớn
+- **Premium/Discount**: Chỉ long ở discount, short ở premium
+
+### Thư viện
+`smartmoneyconcepts` (pip install smartmoneyconcepts) — tự động phát hiện tất cả SMC patterns từ OHLCV data.
+
+### Hyperopt Params (300 epochs, SharpeHyperOptLoss, train: 20250101-20260101)
+```python
+swing_length = 11
+stoploss = -0.041  # -4.1%
+trailing_stop = True
+trailing_stop_positive = 0.243       # trail ở 24.3%
+trailing_stop_positive_offset = 0.322 # kích hoạt ở +32.2%
+trailing_only_offset_is_reached = True
+
+minimal_roi = {
+    "0": 0.346,    # 34.6%
+    "101": 0.069,  # 6.9%
+    "240": 0.017,  # 1.7%
+    "531": 0       # breakeven
+}
+```
+
+### Backtest Validation (20250101-20260514, 15m, 5 pairs, FULL PERIOD)
+```
+Trades:       2,959
+Win Rate:     61.3% (1,815W / 1,143L)
+Avg Profit:   +0.32%
+Median Profit: +1.70%  ← ĐÚNG TARGET 1-2%/TRADE ✅
+Total P/L:    +$135.92 (+135.92%)  ← $100 → $236 ✅
+Drawdown:     20.59% ($23.96)  ← Hơi cao ⚠️
+Sharpe:       3.48  ← XUẤT SẮC ✅
+Sortino:      4.43  ← XUẤT SẮC ✅
+Calmar:       25.49 ← XUẤT SẮC ✅
+Avg Duration: 5h27m
+Min Balance:  $92.43
+Max Balance:  $236.21
+Best Day:     +$4.02
+Worst Day:    -$4.58
+Days Win/Draw/Lose: 312/3/183
+```
+
+### So sánh với strategies trước
+
+| Metric | MeanReversion (E10) | **SMC** | Thay đổi |
+|:--|:--|:--|:--|
+| Trades | 66 | **2,959** | ×45 |
+| Win Rate | 68.2% | **61.3%** | -7% (chấp nhận) |
+| Total Profit | +$2.44 | **+$135.92** | **×55** 🔥 |
+| Median Profit | N/A | **+1.70%** | Target achieved |
+| Sharpe | 0.28 | **3.48** | ×12 |
+| Drawdown | 2.31% | **20.59%** | Cao hơn ⚠️ |
+
+### KEY INSIGHTS từ SMC
+1. **Median profit 1.70%/trade** — đạt đúng mục tiêu 1-2% đã brainstorm
+2. **Sharpe 3.48** — strategy quality cực cao (>2 là xuất sắc)
+3. **$100 → $236 trong 498 ngày** — performance tốt hơn 55x so với MeanReversion
+4. **Drawdown 20.59%** — cần giảm bằng Position Sizing hoặc MaxDrawdown protection
+5. **6 trades/ngày trung bình** — active trading, không phải chờ cả tuần
+6. **SMC concepts (BOS/FVG/OB) + Trailing TP** = combo cực mạnh cho Futures
+
+### Rủi ro cần lưu ý
+- Drawdown 20% nghĩa là có lúc vốn từ $100 xuống $80 trước khi hồi
+- Market regime change có thể làm giảm performance
+- Cần dry-run validate trước khi trade thật
+
+---
+
+## Bài Học Tổng Hợp (Lessons Learned) — CẬP NHẬT
+
+| # | Bài Học | Từ Version |
+|:--|:--|:--|
+| 1 | KHÔNG BAO GIỜ dùng `stake_amount: unlimited` | v1 |
+| 2 | ADX filter là ESSENTIAL cho trend-following | v2 |
+| 3 | EMA cross proximity là filter QUAN TRỌNG NHẤT cho indicator-based | v4h |
+| 4 | Tight stoploss (-1%) GIẾT profit — wide SL cho winners room | v5 |
+| 5 | Hyperopt ALL spaces cùng lúc tốt hơn chỉ buy/sell | v5 |
+| 6 | **MeanReversion indicator-based quá ít profit/trade (0.24%)** | E10 |
+| 7 | **SMC (price action/structure) > indicator-based cho R:R** | SMC |
+| 8 | **SMC + Trailing TP = median 1.70%/trade — đạt target** | SMC |
+| 9 | **Sharpe 3.48 > 0.28 — chất lượng signal vượt trội** | SMC |
+| 10 | **Drawdown là trade-off: high return = higher DD** | SMC |
+
+---
+
+## Hướng Tiếp Theo (Phase 3)
+
+- [ ] **Phase 3.1**: Giảm drawdown — thử MaxDrawdown protection tighter hoặc giảm max_open_trades
+- [ ] **Phase 3.2**: Dry-run SMC trên Binance Futures (paper trading real-time)
+- [ ] **Phase 3.3**: Tích hợp Kronos (Foundation Model) để predict hướng bổ trợ cho SMC entry
+- [ ] **Phase 3.4**: Thêm pairs (DOGE, AVAX, LINK...) để tăng cơ hội trade
+

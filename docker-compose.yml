@@ -1,6 +1,6 @@
 services:
   freqtrade:
-    image: freqtradeorg/freqtrade:stable
+    build: .
     restart: unless-stopped
     container_name: freqtrade
     volumes:

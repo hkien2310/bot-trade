@@ -1,5 +1,6 @@
 {
     "trading_mode": "futures",
+    "initial_state": "running",
     "margin_mode": "isolated",
     "liquidation_buffer": 0.05,
     "max_open_trades": 3,
@@ -46,7 +47,23 @@
         "use_order_book": true,
         "order_book_top": 1
     },
-    "bot_name": "ScalpBot-Futures",
+    "bot_name": "SMC-Monster-v2",
+    "telegram": {
+        "enabled": true,
+        "token": "8499034065:AAEW8zG4qTxtyoskHH9GhIH_1QyxZLuOrt0",
+        "chat_id": "1430710535",
+        "notification_settings": {
+            "status": "silent",
+            "warning": "silent",
+            "startup": "silent",
+            "buy": "on",
+            "buy_fill": "on",
+            "sell": "on",
+            "sell_fill": "on",
+            "buy_cancel": "silent",
+            "sell_cancel": "silent"
+        }
+    },
     "api_server": {
         "enabled": true,
         "listen_ip_address": "0.0.0.0",

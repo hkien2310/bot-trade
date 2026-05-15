@@ -5,24 +5,24 @@
       "max_open_trades": 3
     },
     "buy": {
-      "swing_length": 5
+      "swing_length": 8
     },
     "roi": {
-      "0": 0.254,
-      "48": 0.094,
-      "137": 0.048,
-      "285": 0
+      "0": 0.246,
+      "45": 0.037,
+      "218": 0.022,
+      "495": 0
     },
     "stoploss": {
-      "stoploss": -0.026
+      "stoploss": -0.116
     },
     "trailing": {
       "trailing_stop": true,
-      "trailing_stop_positive": 0.101,
-      "trailing_stop_positive_offset": 0.174,
+      "trailing_stop_positive": 0.015,
+      "trailing_stop_positive_offset": 0.063,
       "trailing_only_offset_is_reached": true
     }
   },
   "ft_stratparam_v": 1,
-  "export_time": "2026-05-15 02:28:41.184972+00:00"
+  "export_time": "2026-05-15 03:21:21.250366+00:00"
 }

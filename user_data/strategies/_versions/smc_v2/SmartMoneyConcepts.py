@@ -27,23 +27,23 @@ class SmartMoneyConcepts(IStrategy):
     can_short = True
 
     # --- Hyperopt parameters ---
-    swing_length = IntParameter(5, 30, default=11, space='buy', optimize=True)
+    swing_length = IntParameter(5, 30, default=8, space='buy', optimize=True)
 
-    # SL — keep v1 proven approach
-    stoploss = -0.02
+    # SL
+    stoploss = -0.116
 
     # Trailing stop
     trailing_stop = True
-    trailing_stop_positive = 0.02
-    trailing_stop_positive_offset = 0.04
+    trailing_stop_positive = 0.015
+    trailing_stop_positive_offset = 0.063
     trailing_only_offset_is_reached = True
 
-    # ROI — let winners run
+    # ROI
     minimal_roi = {
-        "0": 0.10,
-        "60": 0.06,
-        "180": 0.03,
-        "360": 0.01,
+        "0": 0.246,
+        "45": 0.037,
+        "218": 0.022,
+        "495": 0
     }
 
     # Protections
